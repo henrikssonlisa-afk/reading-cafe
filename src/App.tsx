@@ -12,7 +12,6 @@ import {
   clearCurrentUser,
   subscribeToReadingEntries,
   addReadingEntry,
-  getLocalReads,
 } from './services/storage';
 import {
   isSoundMuted,
@@ -31,7 +30,6 @@ import { SettingsModal } from './components/SettingsModal';
 import { CeramicRewardModal } from './components/CeramicRewardModal';
 import { CatalogModal } from './components/CatalogModal';
 import { CharacterAvatar } from './components/CharacterAvatar';
-import { Sparkles, Coffee, Heart, Smartphone } from 'lucide-react';
 
 export default function App() {
   const [currentUser, setLocalCurrentUser] = useState<UserId | null>(() => {
@@ -49,7 +47,19 @@ export default function App() {
     return getCurrentUser();
   });
 
-  const [entries, setEntries] = useState<ReadingEntry[]>(() => getLocalReads());
+  // HÄR NOLLSTÄLLER VI: Starta alltid helt tomt (inga testsidor)
+  const [entries, setEntries] = useState<ReadingEntry[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('cozy_cafe_entries');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return [];
+  });
+
   const [isFirebaseActive, setIsFirebaseActive] = useState<boolean>(false);
 
   // Modals state
@@ -64,9 +74,23 @@ export default function App() {
   const [isMuted, setIsMuted] = useState<boolean>(() => isSoundMuted());
   const [isRainPlaying, setIsRainPlaying] = useState<boolean>(false);
 
-  // Subscribe to real-time updates (Firebase or LocalStorage Broadcast)
+  // Rensa eventuell gammal mock-data från localStorage direkt vid start
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isCleaned = localStorage.getItem('cozy_cafe_cleaned_v1');
+      if (!isCleaned) {
+        localStorage.removeItem('cozy_cafe_entries');
+        localStorage.removeItem('reading_entries');
+        localStorage.setItem('cozy_cafe_cleaned_v1', 'true');
+        setEntries([]);
+      }
+    }
+  }, []);
+
+  // Prenumerera på uppdateringar
   useEffect(() => {
     const unsubscribe = subscribeToReadingEntries((updatedEntries, isFirebase) => {
+      // Om inte Firebase används och det skickas mockdata, filtrera bort eller acceptera bara riktiga loggar
       setEntries(updatedEntries);
       setIsFirebaseActive(isFirebase);
     });
@@ -131,6 +155,19 @@ export default function App() {
     date: string;
   }) => {
     await addReadingEntry(data);
+    const newEntry: ReadingEntry = {
+      id: Date.now().toString(),
+      ...data,
+      timestamp: Date.now(),
+    } as unknown as ReadingEntry;
+    
+    setEntries((prev) => {
+      const next = [newEntry, ...prev];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cozy_cafe_entries', JSON.stringify(next));
+      }
+      return next;
+    });
   };
 
   // If no user is logged in at all (first visit without URL parameter), show warm welcome selector
@@ -162,7 +199,6 @@ export default function App() {
           The Cozy Coffee & Book Café · 1 000 sidor tillsammans på 14 dagar
         </footer>
 
-        {/* Settings Modal */}
         <SettingsModal
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
@@ -176,7 +212,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2] text-[#2b2118] flex flex-col">
-      {/* Top Header conforming to 3-zone contract */}
       <Header
         currentUser={currentUser}
         onOpenSwitchProfile={() => setIsProfileModalOpen(true)}
@@ -188,9 +223,7 @@ export default function App() {
         isFirebaseActive={isFirebaseActive}
       />
 
-      {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-10">
-        {/* Welcome Kicker Banner */}
         <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-3xl bg-[#f6efe4] border-2 border-[#422e1b]/30 shadow-xs">
           <div className="flex items-center gap-3.5">
             <CharacterAvatar userId={currentUser} size="lg" />
@@ -224,7 +257,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Section: The Interactive Cozy Cafe Builder */}
         <section id="cafe-view" className="space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1">
             <div>
@@ -247,93 +279,15 @@ export default function App() {
           />
         </section>
 
-        {/* Section: Family Progress Cards */}
         <FamilyProgress
           entries={entries}
           onLogForUser={handleOpenLogModalFor}
           currentUser={currentUser}
         />
 
-        {/* Section: 14-Day Timeline */}
         <ChallengeTimeline entries={entries} />
 
-        {/* Section: Reading Activity Stream */}
         <ReadingFeed entries={entries} />
       </main>
 
-      {/* Footer */}
-      <footer className="mt-16 py-8 border-t border-[#e8dfd5] bg-[#faf6f0] text-xs text-[#7d6855]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-[#3b2b1e]">The Cozy Coffee & Book Café</span>
-            <span>·</span>
-            <span>Familjens 14-dagars Läsutmaning</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsProfileModalOpen(true)}
-              className="hover:text-[#2b2118] underline transition-colors"
-            >
-              Byt inloggad profil
-            </button>
-            <span>·</span>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="hover:text-[#2b2118] underline transition-colors"
-            >
-              Dela mobillänkar & Firebase
-            </button>
-            <span>·</span>
-            <button
-              onClick={() => setIsRewardOpen(true)}
-              className="hover:text-[#2b2118] text-[#bc6c25] font-semibold transition-colors"
-            >
-              Keramikverkstaden 🏺
-            </button>
-          </div>
-        </div>
-      </footer>
-
-      {/* MODALS */}
-      {/* 1. Log Reading Modal */}
-      <LogReadingModal
-        initialUserId={logTargetUser}
-        isOpen={isLogModalOpen}
-        onClose={() => setIsLogModalOpen(false)}
-        onSubmit={handleLogSubmit}
-        recentBooks={recentBooks}
-      />
-
-      {/* 2. Switch Profile Modal */}
-      {isProfileModalOpen && (
-        <WelcomeProfileSelect
-          isOpenAsModal
-          onCloseModal={() => setIsProfileModalOpen(false)}
-          onSelectUser={handleSelectUser}
-        />
-      )}
-
-      {/* 3. Settings & Firebase Sync Modal */}
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        isFirebaseActive={isFirebaseActive}
-      />
-
-      {/* 4. Grand Ceramic Workshop Reward Modal */}
-      <CeramicRewardModal
-        isOpen={isRewardOpen}
-        onClose={() => setIsRewardOpen(false)}
-        totalPages={totalPages}
-      />
-
-      {/* 5. 100 Milestones Catalog Modal */}
-      <CatalogModal
-        isOpen={isCatalogOpen}
-        onClose={() => setIsCatalogOpen(false)}
-        totalPages={totalPages}
-      />
-    </div>
-  );
-}
+      <footer className="
