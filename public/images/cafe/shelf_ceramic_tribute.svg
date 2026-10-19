@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" width="100%" height="100%">
+    <!-- Shelf wooden beam -->
+    <rect x="10" y="90" width="220" height="16" rx="4" fill="#a47148" stroke="#3c2a1a" stroke-width="3.5" />
+    <polygon points="30,106 30,130 45,106" fill="#3c2a1a" />
+    <polygon points="210,106 210,130 195,106" fill="#3c2a1a" />
+
+    <!-- 4 Personalized Family Mugs: Ellen, Tilde, Lisa, Mange -->
+    <!-- Ellen's Mug (Sage green with 'E') -->
+    <rect x="25" y="55" width="28" height="35" rx="5" fill="#84a98c" stroke="#3c2a1a" stroke-width="3" />
+    <path d="M 25,65 Q 16,65 16,72 Q 16,80 25,80" fill="none" stroke="#3c2a1a" stroke-width="2.5" />
+    <text x="39" y="79" font-size="16" font-weight="bold" fill="#fffdfa" text-anchor="middle">E</text>
+
+    <!-- Tilde's Mug (Warm terracotta with 'T') -->
+    <rect x="65" y="55" width="28" height="35" rx="5" fill="#e76f51" stroke="#3c2a1a" stroke-width="3" />
+    <path d="M 65,65 Q 56,65 56,72 Q 56,80 65,80" fill="none" stroke="#3c2a1a" stroke-width="2.5" />
+    <text x="79" y="79" font-size="16" font-weight="bold" fill="#fffdfa" text-anchor="middle">T</text>
+
+    <!-- Lisa's Mug (Cozy Ochre with 'L') -->
+    <rect x="105" y="55" width="28" height="35" rx="5" fill="#e9c46a" stroke="#3c2a1a" stroke-width="3" />
+    <path d="M 133,65 Q 142,65 142,72 Q 142,80 133,80" fill="none" stroke="#3c2a1a" stroke-width="2.5" />
+    <text x="119" y="79" font-size="16" font-weight="bold" fill="#fffdfa" text-anchor="middle">L</text>
+
+    <!-- Mange's Mug (Espresso Mocha with 'M') -->
+    <rect x="145" y="55" width="28" height="35" rx="5" fill="#6f4e37" stroke="#3c2a1a" stroke-width="3" />
+    <path d="M 173,65 Q 182,65 182,72 Q 182,80 173,80" fill="none" stroke="#3c2a1a" stroke-width="2.5" />
+    <text x="159" y="79" font-size="16" font-weight="bold" fill="#fffdfa" text-anchor="middle">M</text>
+
+    <!-- Handpainted Ceramic Vase & Brush on right -->
+    <ellipse cx="200" cy="72" rx="14" ry="18" fill="#f4a261" stroke="#3c2a1a" stroke-width="3" />
+    <rect x="195" y="44" width="10" height="14" rx="2" fill="#f4a261" stroke="#3c2a1a" stroke-width="2.5" />
+    <!-- Fresh clay brushes -->
+    <line x1="200" y1="44" x2="208" y2="22" stroke="#8c5836" stroke-width="3" stroke-linecap="round" />
+    <polygon points="207,22 211,16 209,24" fill="#3c2a1a" />
+
+    <!-- Golden glow sparkle -->
+    <text x="120" y="32" font-size="20" text-anchor="middle">✨</text>
+  </svg>

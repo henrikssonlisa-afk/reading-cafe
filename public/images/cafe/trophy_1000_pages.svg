@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+    <!-- Glowing backdrop -->
+    <circle cx="80" cy="80" r="70" fill="rgba(244,162,97,0.2)" />
+    <!-- Base pedestal -->
+    <rect x="50" y="115" width="60" height="20" rx="4" fill="#3c2a1a" stroke="#25170d" stroke-width="3" />
+    <rect x="56" y="120" width="48" height="10" rx="2" fill="#e9c46a" />
+    <text x="80" y="128" font-size="8" font-weight="bold" fill="#3c2a1a" text-anchor="middle">1000 SIDOR</text>
+
+    <!-- Golden Chalice / Trophy -->
+    <path d="M 60,65 L 75,115 L 85,115 L 100,65 Z" fill="#e9c46a" stroke="#3c2a1a" stroke-width="3.5" />
+    <ellipse cx="80" cy="65" rx="35" ry="24" fill="#f4a261" stroke="#3c2a1a" stroke-width="4" />
+    <ellipse cx="80" cy="50" rx="30" ry="12" fill="#ffd166" stroke="#3c2a1a" stroke-width="3" />
+
+    <!-- Handles -->
+    <path d="M 50,55 Q 30,55 35,75 Q 40,90 64,80" fill="none" stroke="#3c2a1a" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 110,55 Q 130,55 125,75 Q 120,90 96,80" fill="none" stroke="#3c2a1a" stroke-width="4.5" stroke-linecap="round" />
+
+    <!-- Star & Sparkles -->
+    <text x="80" y="74" font-size="22" font-weight="bold" fill="#fffdfa" text-anchor="middle">⭐</text>
+    <text x="40" y="35" font-size="16">✨</text>
+    <text x="115" y="35" font-size="16">🎉</text>
+  </svg>

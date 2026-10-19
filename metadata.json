@@ -1,0 +1,6 @@
+{
+  "name": "The Cozy Coffee & Book Café",
+  "description": "En mysig 2-veckors familjeläsutmaning med cafébygge och gemensamt mål om 1000 sidor!",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

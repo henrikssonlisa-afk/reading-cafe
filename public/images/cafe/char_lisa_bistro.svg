@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 230" width="100%" height="100%">
+    <!-- Shadow -->
+    <ellipse cx="85" cy="218" rx="55" ry="9" fill="rgba(60,42,26,0.12)" />
+
+    <!-- Slacks & Clogs (Sitting comfortably) -->
+    <g>
+      <!-- Left Leg in dark slate navy slacks -->
+      <path d="M 65,145 L 56,198" fill="none" stroke="#3c2a1a" stroke-width="16" stroke-linecap="round" />
+      <path d="M 65,145 L 56,198" fill="none" stroke="#374151" stroke-width="11" stroke-linecap="round" />
+      <!-- Left brown leather clog -->
+      <ellipse cx="52" cy="204" rx="12" ry="7" fill="#8c5836" stroke="#3c2a1a" stroke-width="3.5" />
+      <rect x="52" y="198" width="8" height="5" rx="2" fill="#3c2a1a" />
+
+      <!-- Right Leg -->
+      <path d="M 95,145 L 98,198" fill="none" stroke="#3c2a1a" stroke-width="16" stroke-linecap="round" />
+      <path d="M 95,145 L 98,198" fill="none" stroke="#374151" stroke-width="11" stroke-linecap="round" />
+      <!-- Right clog -->
+      <ellipse cx="102" cy="204" rx="12" ry="7" fill="#8c5836" stroke="#3c2a1a" stroke-width="3.5" />
+      <rect x="94" y="198" width="8" height="5" rx="2" fill="#3c2a1a" />
+    </g>
+
+    <!-- Torso: Warm Camel Brown Cardigan over White Collar -->
+    <g>
+      <ellipse cx="85" cy="120" rx="36" ry="34" fill="#9c6644" stroke="#3c2a1a" stroke-width="4.5" />
+      <!-- White blouse V-neck collar -->
+      <polygon points="85,96 73,82 97,82" fill="#fffdfa" stroke="#3c2a1a" stroke-width="3" stroke-linejoin="round" />
+      <!-- Cardigan buttons -->
+      <line x1="85" y1="102" x2="85" y2="148" stroke="#7f4f27" stroke-width="2.5" />
+      <circle cx="85" cy="110" r="2" fill="#3c2a1a" />
+      <circle cx="85" cy="124" r="2" fill="#3c2a1a" />
+      <circle cx="85" cy="138" r="2" fill="#3c2a1a" />
+    </g>
+
+    <!-- Left Arm: resting on bistro table holding open feelgood novel -->
+    <g>
+      <path d="M 58,108 Q 42,130 60,146" fill="none" stroke="#3c2a1a" stroke-width="14" stroke-linecap="round" />
+      <path d="M 58,108 Q 42,130 60,146" fill="none" stroke="#9c6644" stroke-width="10" stroke-linecap="round" />
+      <circle cx="62" cy="148" r="6" fill="#feddc7" stroke="#3c2a1a" stroke-width="2.5" />
+    </g>
+
+    <!-- Right Arm: holding warm ceramic mug -->
+    <g>
+      <path d="M 112,108 Q 128,130 110,144" fill="none" stroke="#3c2a1a" stroke-width="14" stroke-linecap="round" />
+      <path d="M 112,108 Q 128,130 110,144" fill="none" stroke="#9c6644" stroke-width="10" stroke-linecap="round" />
+      <circle cx="106" cy="146" r="6" fill="#feddc7" stroke="#3c2a1a" stroke-width="2.5" />
+      <!-- Ceramic Coffee Mug in hands -->
+      <rect x="98" y="138" width="16" height="15" rx="4" fill="#e76f51" stroke="#3c2a1a" stroke-width="2.5" />
+      <path d="M 114,142 Q 119,142 119,146 Q 119,150 114,150" fill="none" stroke="#3c2a1a" stroke-width="2" stroke-linecap="round" />
+      <ellipse cx="106" cy="138" rx="8" ry="2.5" fill="#fdfaf6" />
+    </g>
+
+    <!-- Open book resting in lap / table -->
+    <g transform="translate(48, 144)">
+      <polygon points="0,18 18,12 36,18 18,24" fill="#fffdfa" stroke="#3c2a1a" stroke-width="2.8" />
+      <polygon points="0,18 0,22 18,28 36,22 36,18" fill="#8c5836" stroke="#3c2a1a" stroke-width="2.8" />
+      <line x1="18" y1="13" x2="18" y2="27" stroke="#3c2a1a" stroke-width="2" stroke-linecap="round" />
+    </g>
+
+    <!-- SHORT DARK PAGE BOB HAIRCUT: Curving smoothly around chin -->
+    <path d="M 52,48 C 50,22 65,14 85,14 C 105,14 120,22 118,48 C 122,65 116,78 108,82 C 100,84 98,78 98,74 C 92,78 78,78 72,74 C 72,78 70,84 62,82 C 54,78 48,65 52,48 Z"
+          fill="#342017" stroke="#3c2a1a" stroke-width="4.5" stroke-linejoin="round" />
+    <path d="M 55,50 Q 52,65 56,76" stroke="#22130c" stroke-width="2.2" fill="none" stroke-linecap="round" />
+    <path d="M 115,50 Q 118,65 114,76" stroke="#22130c" stroke-width="2.2" fill="none" stroke-linecap="round" />
+
+    <!-- Chubby kind face -->
+    <ellipse cx="85" cy="50" rx="27" ry="26" fill="#feddc7" stroke="#3c2a1a" stroke-width="4" />
+
+    <!-- Bangs curving across forehead -->
+    <path d="M 56,44 C 60,28 72,22 85,22 C 98,22 110,28 114,44 C 106,36 96,34 85,35 C 74,34 64,36 56,44 Z"
+          fill="#342017" stroke="#3c2a1a" stroke-width="3.5" stroke-linejoin="round" />
+
+    <!-- LARGE STYLISH RETRO ROUND GLASSES -->
+    <g>
+      <!-- Glass lenses with warm reflection -->
+      <circle cx="73" cy="49" r="11" fill="rgba(255,255,255,0.4)" stroke="#3c2a1a" stroke-width="3.5" />
+      <circle cx="97" cy="49" r="11" fill="rgba(255,255,255,0.4)" stroke="#3c2a1a" stroke-width="3.5" />
+      <!-- Bridge & temple arms -->
+      <path d="M 84,49 Q 85,46 86,49" stroke="#3c2a1a" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <line x1="62" y1="49" x2="56" y2="50" stroke="#3c2a1a" stroke-width="3" stroke-linecap="round" />
+      <line x1="108" y1="49" x2="114" y2="50" stroke="#3c2a1a" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Eyes behind glasses -->
+      <circle cx="73" cy="49" r="2.8" fill="#3c2a1a" />
+      <circle cx="74.5" cy="47.5" r="1" fill="#ffffff" />
+      <circle cx="97" cy="49" r="2.8" fill="#3c2a1a" />
+      <circle cx="98.5" cy="47.5" r="1" fill="#ffffff" />
+    </g>
+
+    <!-- Warm smile & blush cheeks -->
+    <path d="M 79,61 Q 85,67 91,61" fill="none" stroke="#3c2a1a" stroke-width="2.8" stroke-linecap="round" />
+    <ellipse cx="63" cy="58" rx="6" ry="3.5" fill="#fca5a5" opacity="0.85" />
+    <ellipse cx="107" cy="58" rx="6" ry="3.5" fill="#fca5a5" opacity="0.85" />
+  </svg>
