@@ -71,11 +71,11 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const isCleaned = localStorage.getItem('cozy_cafe_reset_done');
+      const isCleaned = localStorage.getItem('cozy_cafe_force_v2');
       if (!isCleaned) {
-        localStorage.removeItem('cozy_cafe_entries');
-        localStorage.removeItem('reading_entries');
-        localStorage.setItem('cozy_cafe_reset_done', 'true');
+        localStorage.clear();
+        sessionStorage.clear();
+        localStorage.setItem('cozy_cafe_force_v2', 'true');
         setEntries([]);
       }
     }
