@@ -18,74 +18,7 @@ const LOCAL_STORAGE_FIREBASE_KEY = 'cozy_cafe_firebase_config_v1';
 const LOCAL_STORAGE_USER_KEY = 'cozy_cafe_current_user_v1';
 
 // Initial sample reads so the app has immediate life on first load, demonstrating the phases and progress
-export const INITIAL_SAMPLE_READS: ReadingEntry[] = [
-  {
-    id: 'sample-1',
-    userId: 'ellen',
-    pages: 18,
-    bookTitle: 'Percy Jackson & Född till hjälte',
-    note: 'Så spännande! Kunde inte sluta läsa kapitlet om minotauren.',
-    rating: 5,
-    date: new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0],
-    createdAt: Date.now() - 2 * 86400000,
-    reactions: { heart: 3, star: 2, coffee: 1 },
-  },
-  {
-    id: 'sample-2',
-    userId: 'tilde',
-    pages: 35,
-    bookTitle: 'A Court of Thorns and Roses',
-    note: 'Underbar världsbyggnad. Älskar karaktärerna!',
-    rating: 5,
-    date: new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0],
-    createdAt: Date.now() - 2 * 86400000 + 3600000,
-    reactions: { star: 4, heart: 2 },
-  },
-  {
-    id: 'sample-3',
-    userId: 'lisa',
-    pages: 25,
-    bookTitle: 'Ett litet liv',
-    note: 'Väldigt berörande och vackert skrivet.',
-    rating: 4,
-    date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-    createdAt: Date.now() - 86400000,
-    reactions: { coffee: 2, heart: 3 },
-  },
-  {
-    id: 'sample-4',
-    userId: 'mange',
-    pages: 10,
-    bookTitle: 'Kaffe: Från böna till kopp',
-    note: 'Perfekt bok till morgonkaffet!',
-    rating: 4,
-    date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-    createdAt: Date.now() - 86400000 + 7200000,
-    reactions: { coffee: 4, heart: 1 },
-  },
-  {
-    id: 'sample-5',
-    userId: 'ellen',
-    pages: 22,
-    bookTitle: 'Percy Jackson & Född till hjälte',
-    note: 'Läste i sängen innan läggdags, så mysigt!',
-    rating: 5,
-    date: new Date().toISOString().split('T')[0],
-    createdAt: Date.now() - 14400000,
-    reactions: { heart: 4, book: 3 },
-  },
-  {
-    id: 'sample-6',
-    userId: 'tilde',
-    pages: 40,
-    bookTitle: 'A Court of Thorns and Roses',
-    note: 'Klarade dagens mål med råge! Nu är caféet ännu finare.',
-    rating: 5,
-    date: new Date().toISOString().split('T')[0],
-    createdAt: Date.now() - 7200000,
-    reactions: { star: 3, heart: 3, coffee: 2 },
-  },
-];
+export const INITIAL_SAMPLE_READS: ReadingEntry[] = [];
 
 let firestoreInstance: Firestore | null = null;
 let broadcastChannel: BroadcastChannel | null = null;
