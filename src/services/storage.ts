@@ -3,13 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ReadingEntry, UserId } from '../types';
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { ReadingEntry, UserId, ReactionType } from '../types';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
   onSnapshot,
   addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
   query,
   orderBy,
   Firestore,
@@ -18,7 +21,7 @@ import {
 export const INITIAL_SAMPLE_READS: ReadingEntry[] = [];
 
 // Lisa & familjens Firebase-inställningar
-const FIREBASE_CONFIG = {
+export const DEFAULT_FIREBASE_CONFIG = {
   apiKey: "AIzaSyAk0Idtztu1oWXfFHqcXC7DuUWTpmVqxMY",
   authDomain: "reading-cafe.firebaseapp.com",
   projectId: "reading-cafe",
@@ -38,14 +41,34 @@ try {
   console.warn('BroadcastChannel not supported', e);
 }
 
+export function getStoredFirebaseConfig() {
+  if (typeof window === 'undefined') return DEFAULT_FIREBASE_CONFIG;
+  const stored = localStorage.getItem('cozy_cafe_firebase_config');
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return DEFAULT_FIREBASE_CONFIG;
+    }
+  }
+  return DEFAULT_FIREBASE_CONFIG;
+}
+
+export function saveFirebaseConfig(config: any): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('cozy_cafe_firebase_config', JSON.stringify(config));
+  firestoreInstance = null;
+}
+
 function getDatabase(): Firestore | null {
   if (firestoreInstance) return firestoreInstance;
   try {
-    const app = getApps().length > 0 ? getApp() : initializeApp(FIREBASE_CONFIG);
+    const config = getStoredFirebaseConfig();
+    const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(config);
     firestoreInstance = getFirestore(app);
     return firestoreInstance;
   } catch (err) {
-    console.error('Kunde inte starta Firebase Firestore:', err);
+    console.error('Kunde inte initiera Firebase:', err);
     return null;
   }
 }
@@ -63,6 +86,25 @@ export function setCurrentUser(userId: UserId): void {
 export function clearCurrentUser(): void {
   if (typeof window === 'undefined') return;
   localStorage.removeItem('cozy_cafe_current_user');
+}
+
+export function getLocalEntries(): ReadingEntry[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('cozy_cafe_entries');
+    if (!raw) return [];
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+export function setLocalEntries(entries: ReadingEntry[]): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('cozy_cafe_entries', JSON.stringify(entries));
+  if (broadcastChannel) {
+    broadcastChannel.postMessage({ type: 'UPDATE_ENTRIES' });
+  }
 }
 
 export function subscribeToReadingEntries(
@@ -98,20 +140,18 @@ export function subscribeToReadingEntries(
           callback(list, true);
         },
         (error) => {
-          console.error('Firestore snapshot listener error:', error);
-          const fallback = getLocalEntries();
-          callback(fallback, false);
+          console.error('Firestore listener error:', error);
+          callback(getLocalEntries(), false);
         }
       );
 
       return () => unsubscribe();
     } catch (err) {
-      console.error('Kunde inte lyssna på Firestore:', err);
+      console.error('Kunde inte prenumerera på Firestore:', err);
     }
   }
 
-  const initial = getLocalEntries();
-  callback(initial, false);
+  callback(getLocalEntries(), false);
 
   const handleStorage = (e: StorageEvent) => {
     if (e.key === 'cozy_cafe_entries') {
@@ -142,17 +182,6 @@ export function subscribeToReadingEntries(
   };
 }
 
-function getLocalEntries(): ReadingEntry[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem('cozy_cafe_entries');
-    if (!raw) return [];
-    return JSON.parse(raw);
-  } catch {
-    return [];
-  }
-}
-
 export async function addReadingEntry(entry: {
   userId: UserId;
   pages: number;
@@ -181,21 +210,63 @@ export async function addReadingEntry(entry: {
       await addDoc(collection(db, 'reading_entries'), newEntryPayload);
       return;
     } catch (e) {
-      console.error('Kunde inte spara till Firestore, sparar lokalt:', e);
+      console.error('Kunde inte spara i Firestore, sparar lokalt:', e);
     }
   }
 
-  if (typeof window !== 'undefined') {
-    const local = getLocalEntries();
-    const mockEntry: ReadingEntry = {
-      id: `local-${timestamp}`,
-      ...newEntryPayload,
-    } as unknown as ReadingEntry;
-    const updated = [mockEntry, ...local];
-    localStorage.setItem('cozy_cafe_entries', JSON.stringify(updated));
+  const local = getLocalEntries();
+  const mockEntry: ReadingEntry = {
+    id: `local-${timestamp}`,
+    ...newEntryPayload,
+  } as unknown as ReadingEntry;
+  setLocalEntries([mockEntry, ...local]);
+}
 
-    if (broadcastChannel) {
-      broadcastChannel.postMessage({ type: 'UPDATE_ENTRIES' });
+export async function removeReadingEntry(id: string): Promise<void> {
+  const db = getDatabase();
+  if (db && !id.startsWith('local-')) {
+    try {
+      await deleteDoc(doc(db, 'reading_entries', id));
+      return;
+    } catch (err) {
+      console.error('Kunde inte ta bort ur Firestore:', err);
     }
   }
+
+  const current = getLocalEntries().filter((e) => e.id !== id);
+  setLocalEntries(current);
+}
+
+export async function addReactionToEntry(id: string, reactionType: ReactionType): Promise<void> {
+  const db = getDatabase();
+  const entries = getLocalEntries();
+  const target = entries.find((e) => e.id === id);
+
+  if (!target) return;
+
+  const currentReactions = target.reactions || { heart: 0, star: 0, coffee: 0 };
+  const updatedReactions = {
+    ...currentReactions,
+    [reactionType]: (currentReactions[reactionType] || 0) + 1,
+  };
+
+  if (db && !id.startsWith('local-')) {
+    try {
+      await updateDoc(doc(db, 'reading_entries', id), {
+        reactions: updatedReactions,
+      });
+      return;
+    } catch (err) {
+      console.error('Kunde inte uppdatera reaktion i Firestore:', err);
+    }
+  }
+
+  const updatedEntries = entries.map((e) =>
+    e.id === id ? { ...e, reactions: updatedReactions } : e
+  );
+  setLocalEntries(updatedEntries);
+}
+
+export async function resetChallengeData(): Promise<void> {
+  setLocalEntries([]);
 }
